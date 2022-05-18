@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import peermarket.peershop.controller.dto.JoinUserDto;
+import peermarket.peershop.entity.User;
 import peermarket.peershop.service.UserService;
 
 @Controller
@@ -27,6 +28,7 @@ public class UserController {
         if (result.hasErrors()) {
             return "/user/register";
         }
-        return null;
+        userService.join(joinUserDto);
+        return "redirect:/";
     }
 }
