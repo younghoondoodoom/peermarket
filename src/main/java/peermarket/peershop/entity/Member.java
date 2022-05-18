@@ -16,7 +16,7 @@ import peermarket.peershop.entity.status.UserStatus;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseTimeEntity {
+public class Member extends BaseTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "user_id")
@@ -35,7 +35,7 @@ public class User extends BaseTimeEntity {
         this.lastLogin = lastLogin;
     }
 
-    public User(String email, String password, String username) {
+    public Member(String email, String password, String username) {
         this.email = email;
         this.password = password;
         this.username = username;

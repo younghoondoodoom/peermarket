@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입 페이지</title>
+</head>
+<body>
+<h1>회원 가입</h1>
+<hr>
+
+<form th:action="@{/signup}" method="post">
+  <input type="text" name="email" placeholder="email 입력">
+  <input type="text" name="username" placeholder="username 입력">
+  <input type="password" name="password" placeholder="password 입력">
+  <input type="password" name="passwordConfirm" placeholder="password 확인">
+  <button type="submit">가입하기</button>
+</form>
+</body>
+</html>

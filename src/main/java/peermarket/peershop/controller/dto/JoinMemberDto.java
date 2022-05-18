@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class JoinUserDto {
+public class JoinMemberDto {
 
     @NotEmpty
     @Email
