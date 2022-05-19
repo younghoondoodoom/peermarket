@@ -1,6 +1,6 @@
 package peermarket.peershop.entity.status;
 
 
-public enum UserStatus {
+public enum MemberStatus {
     ACTIVE, INACTIVE, DELETED
 }

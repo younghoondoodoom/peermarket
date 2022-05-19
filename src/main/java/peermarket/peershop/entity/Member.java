@@ -11,7 +11,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import peermarket.peershop.entity.base.BaseTimeEntity;
-import peermarket.peershop.entity.status.UserStatus;
+import peermarket.peershop.entity.status.MemberStatus;
 
 @Getter
 @Entity
@@ -24,12 +24,16 @@ public class Member extends BaseTimeEntity {
     private String email;
     private String password;
     private String username;
+    private String role;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(20) default 'ACTIVE'")
-    private UserStatus status;
+    private MemberStatus status = MemberStatus.ACTIVE;
 
     private LocalDateTime lastLogin; // login 시에 로직 추가해야함.
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public void updateLastLogin(LocalDateTime lastLogin) {
         this.lastLogin = lastLogin;
