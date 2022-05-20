@@ -1,19 +1,12 @@
 package peermarket.peershop.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peermarket.peershop.config.auth.PrincipleDetails;
-import peermarket.peershop.controller.dto.JoinMemberDto;
 import peermarket.peershop.entity.Member;
 import peermarket.peershop.exception.AlreadyExistException;
 import peermarket.peershop.repository.MemberRepository;
@@ -43,6 +36,7 @@ public class MemberServiceImpl implements MemberService {
 
     // Security session = Authentication(principleDetails(member))
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Member> memberOptional = memberRepository.findByEmail(email);
         if (memberOptional.isPresent()) {
