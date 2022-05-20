@@ -19,7 +19,7 @@ import peermarket.peershop.entity.status.MemberStatus;
 public class Member extends BaseTimeEntity {
 
     @Id @GeneratedValue
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     private Long id;
     private String email;
     private String password;
