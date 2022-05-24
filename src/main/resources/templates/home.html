@@ -1,10 +1,85 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml"
-      xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head th:replace="fragments/header :: header" />
 <body>
+<style>
+  .card-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .card-group>.card {
+    min-width: 20%;
+    max-width: 20%;
+  }
+  .pagination-outer {
+    text-align: center;
+    margin-top: 30px;
+  }
+  .pagination-inner {
+    display: inline-block;
+  }
+  .page-link {
+    color : #1c1f23;
+  }
+  .pagination {
+    --bs-pagination-hover-color: #1c1f23;
+    --bs-pagination-color: #1c1f23;
+    --bs-pagination-focus-color: #1c1f23;
+    --bs-pagination-active-bg: #1c1f23;
+    --bs-pagination-active-border-color: #1c1f23;
+  }
+
+  .active>.page-link, .page-link.active {
+    background-color: #1c1f23;
+    border-color: #1c1f23;
+  }
+
+
+
+
+</style>
+
 <div class="container">
   <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+  <div class="card-group">
+    <div th:each="item : ${items}" class="card">
+      <img src="/img/img.png" class="card-img-top" alt="상품 사진">
+      <div class="card-body">
+        <h5 th:text="${item.getItemName()}" class="card-title">Card title</h5>
+        <p th:text="${item.getPrice() + '원'}" class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        <p class="card-text">
+          <small th:text="${#temporals.format(item.getCreatedAt(), 'yyyy-MM-dd HH:mm')}" class="text-muted"></small>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination-outer">
+    <nav th:class="pagination-inner">
+      <ul class="pagination"
+        th:with="start=${(items.number/10)*10 + 1},
+                   last=(${start + 9 < items.totalPages ? start + 9 : items.totalPages})">
+        <li th:class="${items.first} ? 'disabled'" class="page-item">
+          <a th:href="${items.first} ? '#' : @{/(page=${items.number})}" class="page-link" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == items.number + 1} ? 'active'" class="page-item">
+          <a th:text="${page}" th:href="@{/(page=${page})}" class="page-link"></a>
+        </li>
+        <li th:class="${items.last} ? 'disabled'" class="page-item">
+          <a th:href="${items.last} ? '#' : @{/(page=${items.number + 2})}" class="page-link" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+
 
   <div th:replace="fragments/footer :: footer" />
 </div>

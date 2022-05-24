@@ -14,12 +14,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import peermarket.peershop.entity.base.BaseTimeEntity;
 import peermarket.peershop.entity.status.ItemStatus;
 import peermarket.peershop.exception.NotEnoughStockException;
 
 @Getter
 @Entity
+@NoArgsConstructor
 public class Item extends BaseTimeEntity {
 
     @Id
@@ -33,6 +35,7 @@ public class Item extends BaseTimeEntity {
 
     private String itemName;
 
+    @Column(length = 2000)
     private String imgUrl;
 
     private String description;
@@ -40,6 +43,17 @@ public class Item extends BaseTimeEntity {
     private int stockQuantity;
 
     private int price;
+
+    public Item(Member member, String itemName, String imgUrl, String description,
+        int stockQuantity,
+        int price) {
+        this.member = member;
+        this.itemName = itemName;
+        this.imgUrl = imgUrl;
+        this.description = description;
+        this.stockQuantity = stockQuantity;
+        this.price = price;
+    }
 
     @Enumerated(EnumType.STRING)
     private ItemStatus status = ItemStatus.ON_SALE;
