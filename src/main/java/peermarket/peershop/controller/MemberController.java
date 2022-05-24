@@ -1,5 +1,6 @@
 package peermarket.peershop.controller;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,7 +10,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import peermarket.peershop.controller.dto.JoinMemberDto;
+import peermarket.peershop.entity.Item;
 import peermarket.peershop.entity.Member;
+import peermarket.peershop.repository.ItemRepository;
+import peermarket.peershop.repository.MemberRepository;
 import peermarket.peershop.service.MemberService;
 
 @Controller
@@ -18,11 +22,8 @@ public class MemberController {
 
     private final MemberService memberService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @GetMapping("/")
-    public String home() {
-        return "/home";
-    }
+    private final MemberRepository memberRepository;
+    private final ItemRepository itemRepository;
 
     @GetMapping("/member/signup")
     public String signup(Model model) {
@@ -33,6 +34,7 @@ public class MemberController {
     @PostMapping("/member/signup")
     public String signup(@Valid JoinMemberDto joinMemberDto, BindingResult result) {
         if (result.hasErrors()) {
+            System.out.println("result.hasErrors() = " + result.hasErrors());
             return "/user/register";
         }
         String encodePassword = bCryptPasswordEncoder.encode(joinMemberDto.getPassword());
@@ -46,6 +48,22 @@ public class MemberController {
     @GetMapping("/member/loginForm")
     public String login() {
         return "/user/login";
+    }
+
+    @PostConstruct
+    public void init() {
+        for (int i = 0; i < 5; i++) {
+            String encodePassword = bCryptPasswordEncoder.encode("test123");
+            Member member = new Member("member" + i + "@test.com", encodePassword, "member" + i);
+            member.setRole("ROLE_USER");
+            memberRepository.save(member);
+        }
+        for (long i = 0; i < 100; i++) {
+            Member member = memberRepository.getById(1L);
+            itemRepository.save(new Item(member, "item" + i, "1",
+                "아이템" + i + "입니다", 10, 10000));
+
+        }
     }
 
 }
