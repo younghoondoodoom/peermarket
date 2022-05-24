@@ -1,0 +1,62 @@
+<head th:replace="fragments/header :: header" />
+<body>
+<style>
+  img {
+    width: 600px;
+    height: 400px;
+    object-fit: contain;
+  }
+  .btn-group-lg>.btn, .btn-lg {
+    position: absolute;
+    width: 180px;
+    top: 90%;
+    left: 90%;
+    transform: translate(-50%, -50%)
+  }
+
+  .btn-outline-success {
+    --bs-btn-color: #1c1f23;
+    --bs-btn-border-color: #1c1f23;
+    --bs-btn-hover-bg: #1c1f23;
+    --bs-btn-hover-border-color: #1c1f23;
+    --bs-btn-active-bg: #1c1f23;
+    --bs-btn-active-border-color: #1c1f23;
+    --bs-btn-disabled-color: #1c1f23;
+  }
+
+</style>
+
+<div class="container">
+
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+  <div class="card mb-3" >
+    <img src="/img/img.png" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h2 th:text="${item.getItemName()}" class="card-title"></h2>
+      <h4 th:text="${item.getPrice()} + '원'" class="card-text"></h4>
+      <p class="card-text"><small th:text="${#temporals.format(item.getLastModifiedAt(), 'yyyy-MM-dd HH:mm')} + '에 수정됨.'" class="text-muted">Last updated 3 mins ago</small></p>
+      <a href="#"><button type="button" class="btn btn-outline-success btn-lg">채팅하기</button></a>
+    </div>
+  </div>
+
+  <table class="table">
+    <tbody>
+    <tr>
+      <th scope="row">상품 설명</th>
+      <td th:text="${item.getDescription()}"></td>
+    </tr>
+    <tr>
+      <th scope="row">판매자</th>
+      <td th:text="${item.getMember().getMemberName()}"></td>
+    </tr>
+    <tr>
+      <th scope="row">남은 수량</th>
+      <td th:text="${item.getStockQuantity()}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div th:replace="fragments/footer :: footer" />
+</div>
+</body>

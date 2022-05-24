@@ -1,9 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<style>
+  .footer {
+    height: auto;
+    min-height: 100%;
+    padding-bottom: 80px;
+  }
+  footer {
+    height: 80px;
+    position: relative;
+    transform: translateY(-100%);
+  }
+  footer>.p-3 {
+    padding: 2rem!important;
+  }
+</style>
+
 <div class="footer" th:fragment="footer">
   <footer class="text-center text-white fixed-bottom" style="background-color: #21081a;">
-    <!-- Grid container -->
-    <div class="container p-4"></div>
     <!-- Grid container -->
 
     <!-- Copyright -->
