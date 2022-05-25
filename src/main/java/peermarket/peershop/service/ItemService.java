@@ -6,10 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import peermarket.peershop.controller.dto.ItemListDto;
 import peermarket.peershop.entity.Item;
 import peermarket.peershop.exception.NotFoundException;
 import peermarket.peershop.repository.ItemRepository;
@@ -23,8 +21,9 @@ public class ItemService {
 
 
     @Transactional
-    public void saveItem(Item item) {
-        itemRepository.save(item);
+    public Long saveItem(Item item) {
+        Item savedItem = itemRepository.save(item);
+        return savedItem.getId();
     }
 
     @Transactional
@@ -39,7 +38,6 @@ public class ItemService {
         item.updateItemInfo(name, imgUrl, description, price, stockQuantity);
     }
 
-
     public Item findOne(Long itemId) {
         Optional<Item> findItemOptional = itemRepository.findById(itemId);
         if (findItemOptional.isEmpty()) {
@@ -50,7 +48,7 @@ public class ItemService {
 
     public Page<Item> findItems(Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, 10, Sort.by("createdAt").descending());
+        pageable = PageRequest.of(page, pageable.getPageSize(), Sort.by("createdAt").descending());
         return itemRepository.findAll(pageable);
     }
 

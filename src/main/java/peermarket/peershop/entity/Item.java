@@ -44,9 +44,7 @@ public class Item extends BaseTimeEntity {
 
     private int price;
 
-    public Item(Member member, String itemName, String imgUrl, String description,
-        int stockQuantity,
-        int price) {
+    public Item(Member member, String itemName, String imgUrl, String description, int stockQuantity, int price) {
         this.member = member;
         this.itemName = itemName;
         this.imgUrl = imgUrl;
