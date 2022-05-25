@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final LoginSuccessHandler loginSuccessHandler;
+
     //해당 메서드의 리턴되는 오브젝트를 ioc로 등록해줌.
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -27,13 +29,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //            .antMatchers("/user/**").authenticated()
             .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
             .anyRequest().permitAll()
-            .and()
+        .and()
             .formLogin()
             .loginPage("/member/loginForm")
             .usernameParameter("email")
             .loginProcessingUrl(
                 "/member/login") // /login 주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행해줌. -> Controller에 로그인을 안만들어됨.
-            .defaultSuccessUrl("/");
+            .defaultSuccessUrl("/")
+            .successHandler(loginSuccessHandler)
+        .and()
+            .sessionManagement()
+            .maximumSessions(1)
+            .expiredUrl("/member/loginForm");
+
     }
 
 }
