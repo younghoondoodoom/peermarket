@@ -34,7 +34,6 @@ public class MemberController {
     @PostMapping("/member/signup")
     public String signup(@Valid JoinMemberDto joinMemberDto, BindingResult result) {
         if (result.hasErrors()) {
-            System.out.println("result.hasErrors() = " + result.hasErrors());
             return "/user/register";
         }
         String encodePassword = bCryptPasswordEncoder.encode(joinMemberDto.getPassword());
@@ -61,7 +60,7 @@ public class MemberController {
         for (long i = 0; i < 100; i++) {
             Member member = memberRepository.getById(1L);
             itemRepository.save(new Item(member, "item" + i, "1",
-                "아이템" + i + "입니다", 10, 10000));
+                "아이템" + i + "입니다", 10, 10000L));
 
         }
     }

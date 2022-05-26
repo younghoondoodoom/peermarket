@@ -35,11 +35,11 @@ class ItemServiceTest {
         Member member = new Member("test@test.com", "test123!", "test");
         memberService.save(member);
 
-        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000);
-        Item item2 = new Item(member, "item2", "imgpath", "item2", 100, 10000);
-        Item item3 = new Item(member, "item3", "imgpath", "item3", 100, 10000);
-        Item item4 = new Item(member, "item4", "imgpath", "item4", 100, 10000);
-        Item item5 = new Item(member, "item5", "imgpath", "item5", 100, 10000);
+        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000L);
+        Item item2 = new Item(member, "item2", "imgpath", "item2", 100, 10000L);
+        Item item3 = new Item(member, "item3", "imgpath", "item3", 100, 10000L);
+        Item item4 = new Item(member, "item4", "imgpath", "item4", 100, 10000L);
+        Item item5 = new Item(member, "item5", "imgpath", "item5", 100, 10000L);
         itemService.saveItem(item1);
         itemService.saveItem(item2);
         itemService.saveItem(item3);
@@ -62,11 +62,11 @@ class ItemServiceTest {
         Member member = new Member("test@test.com", "test123!", "test");
         memberService.save(member);
 
-        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000);
-        Item item2 = new Item(member, "item2", "imgpath", "item2", 100, 10000);
-        Item item3 = new Item(member, "item3", "imgpath", "item3", 100, 10000);
-        Item item4 = new Item(member, "item4", "imgpath", "item4", 100, 10000);
-        Item item5 = new Item(member, "item5", "imgpath", "item5", 100, 10000);
+        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000L);
+        Item item2 = new Item(member, "item2", "imgpath", "item2", 100, 10000L);
+        Item item3 = new Item(member, "item3", "imgpath", "item3", 100, 10000L);
+        Item item4 = new Item(member, "item4", "imgpath", "item4", 100, 10000L);
+        Item item5 = new Item(member, "item5", "imgpath", "item5", 100, 10000L);
         Long id1 = itemService.saveItem(item1);
         Long id2 = itemService.saveItem(item2);
         Long id3 = itemService.saveItem(item3);
@@ -84,7 +84,7 @@ class ItemServiceTest {
         assertThat(findItem1.getItemName()).isEqualTo("item1");
         assertThat(findItem2.getImgUrl()).isEqualTo("imgpath");
         assertThat(findItem3.getDescription()).isEqualTo("item3");
-        assertThat(findItem4.getPrice()).isEqualTo(10000);
+        assertThat(findItem4.getPrice()).isEqualTo(10000L);
         assertThat(findItem5.getStockQuantity()).isEqualTo(100);
 
         assertThrows(NotFoundException.class, () -> {
