@@ -2,6 +2,8 @@ package peermarket.peershop.repsoitory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +37,6 @@ public class ItemReviewRepositoryTest {
 
         //when
         ItemReview itemReview = itemReviewRepository.save(review);
-
 
         //then
         assertThat(itemReview).isNotNull();

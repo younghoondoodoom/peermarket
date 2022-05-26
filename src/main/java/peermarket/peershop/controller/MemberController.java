@@ -57,7 +57,7 @@ public class MemberController {
             member.setRole("ROLE_USER");
             memberRepository.save(member);
         }
-        for (long i = 0; i < 100; i++) {
+        for (long i = 0; i < 10; i++) {
             Member member = memberRepository.getById(1L);
             itemRepository.save(new Item(member, "item" + i, "1",
                 "아이템" + i + "입니다", 10, 10000L));

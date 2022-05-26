@@ -35,7 +35,7 @@ public class ItemReview extends BaseTimeEntity {
 
     private String comment;
 
-    private Boolean isDeleted = true;
+    private Boolean isDeleted = false;
 
     public ItemReview(Member member, Item item, Integer rating, String comment) {
         this.member = member;

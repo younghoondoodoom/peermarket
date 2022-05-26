@@ -46,6 +46,10 @@ public class Item extends BaseTimeEntity {
 
     private Long price;
 
+    private String ratingAverage = "0";
+
+    private Integer ratingCount = 0;
+
     public Item(Member member, String itemName, String imgUrl, String description, Integer stockQuantity, Long price) {
         this.member = member;
         this.itemName = itemName;
@@ -61,13 +65,6 @@ public class Item extends BaseTimeEntity {
     @OneToMany
     @JoinColumn(name = "item_id")
     private List<CategoryItem> categoryItems = new ArrayList<>();
-
-    /**
-     * m2m 카테고리 추가
-     */
-    public void addCategoryItem(CategoryItem... categoryItems) {
-        Collections.addAll(this.categoryItems, categoryItems);
-    }
 
 
     /**
@@ -86,6 +83,17 @@ public class Item extends BaseTimeEntity {
             throw new NotEnoughStockException("재고가 마이너스 입니다.");
         }
         this.stockQuantity = restStock;
+    }
+
+    /**
+     * 평균 평점 수정
+     */
+    public void updateRatingAverage(String ratingAverage) {
+        this.ratingAverage = ratingAverage;
+    }
+
+    public void updateRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
     }
 
     public void updateItemInfo(String itemName, String imgUrl, String description,
