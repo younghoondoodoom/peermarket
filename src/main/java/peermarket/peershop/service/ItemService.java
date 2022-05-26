@@ -27,8 +27,8 @@ public class ItemService {
     }
 
     @Transactional
-    public void updateItem(Long itemId, String name, String imgUrl, String description, int price,
-        int stockQuantity) {
+    public void updateItem(Long itemId, String name, String imgUrl, String description, Integer price,
+        Long stockQuantity) {
         Optional<Item> findItemOptional = itemRepository.findById(itemId);
         if (findItemOptional.isEmpty()) {
             throw new NotFoundException("해당 아이템이 존재하지 않습니다.");

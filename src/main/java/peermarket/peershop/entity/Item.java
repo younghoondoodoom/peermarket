@@ -9,10 +9,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import peermarket.peershop.entity.base.BaseTimeEntity;
@@ -21,11 +23,11 @@ import peermarket.peershop.exception.NotEnoughStockException;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
     private Long id;
 
@@ -40,11 +42,11 @@ public class Item extends BaseTimeEntity {
 
     private String description;
 
-    private int stockQuantity;
+    private Integer stockQuantity;
 
-    private int price;
+    private Long price;
 
-    public Item(Member member, String itemName, String imgUrl, String description, int stockQuantity, int price) {
+    public Item(Member member, String itemName, String imgUrl, String description, Integer stockQuantity, Long price) {
         this.member = member;
         this.itemName = itemName;
         this.imgUrl = imgUrl;
@@ -87,7 +89,7 @@ public class Item extends BaseTimeEntity {
     }
 
     public void updateItemInfo(String itemName, String imgUrl, String description,
-        int stockQuantity, int price) {
+        Integer stockQuantity, Long price) {
         this.itemName = itemName;
         this.imgUrl = imgUrl;
         this.description = description;

@@ -17,8 +17,8 @@ public class ItemListDto {
     private Long id;
     private String itemName;
     private String imgUrl;
-    private int price;
-    private int stockQuantity;
+    private Long price;
+    private Integer stockQuantity;
     private LocalDateTime createdAt;
 
     public ItemListDto(Item item) {

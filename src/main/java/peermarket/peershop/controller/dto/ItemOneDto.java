@@ -14,8 +14,8 @@ public class ItemOneDto {
     private String itemName;
     private String imgUrl;
     private String description;
-    private int stockQuantity;
-    private int price;
+    private Integer stockQuantity;
+    private Long price;
     private LocalDateTime lastModifiedAt;
 
     public ItemOneDto(Item item) {
