@@ -87,4 +87,17 @@ public class ItemService {
 
         return review.getId();
     }
+
+    /**
+     * 댓글 가져오기
+     * pageable
+     */
+    public Page<ItemReview> findReviews(Long itemId, Pageable pageable) {
+        Optional<Item> findItem = itemRepository.findById(itemId);
+        if (findItem.isEmpty()) {
+            throw new NotFoundException("해당 아이템이 존재하지 않습니다.");
+        }
+        return itemReviewRepository.findByItem(findItem.get(), pageable);
+    }
+
 }
