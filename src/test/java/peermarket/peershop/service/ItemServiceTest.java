@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import peermarket.peershop.entity.Item;
@@ -115,8 +118,6 @@ class ItemServiceTest {
         Long reviewId1 = itemService.saveItemReview(itemReview1);
         Long reviewId2 = itemService.saveItemReview(itemReview2);
         Long reviewId3 = itemService.saveItemReview(itemReview3);
-        em.flush();
-        em.clear();
 
         //then
         Optional<ItemReview> findItemReview = itemReviewRepository.findById(reviewId1);
@@ -128,6 +129,32 @@ class ItemServiceTest {
         assertThat(findItemReview.get().getComment()).isEqualTo("테스트입니다.");
         assertThat(findItem.getRatingCount()).isEqualTo(3);
         assertThat(findItem.getRatingAverage()).isEqualTo("3.3");
+
+    }
+
+    @Test
+    public void 댓글리스트() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        memberService.save(member);
+        Item item = new Item(member, "item", "imgpath", "item1", 100, 10000L);
+        Long itemId = itemService.saveItem(item);
+
+        ItemReview itemReview1 = new ItemReview(member, item, 4, "테스트입니다.");
+        ItemReview itemReview2 = new ItemReview(member, item, 3, "테스트입니다.");
+        ItemReview itemReview3 = new ItemReview(member, item, 3, "테스트입니다.");
+        Long reviewId1 = itemService.saveItemReview(itemReview1);
+        Long reviewId2 = itemService.saveItemReview(itemReview2);
+        Long reviewId3 = itemService.saveItemReview(itemReview3);
+
+        //when
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("createdAt").descending());
+        Page<ItemReview> reviewList = itemService.findReviews(item.getId(), pageable);
+
+        //then
+        assertThat(reviewList.getTotalElements()).isEqualTo(3);
+        assertThat(reviewList.getContent().get(0).getId()).isEqualTo(itemReview3.getId());
+        assertThat(reviewList.getTotalPages()).isEqualTo(1);
 
     }
 
