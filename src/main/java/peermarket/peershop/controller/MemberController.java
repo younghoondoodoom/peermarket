@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import peermarket.peershop.controller.dto.JoinMemberDto;
 import peermarket.peershop.entity.Item;
+import peermarket.peershop.entity.ItemReview;
 import peermarket.peershop.entity.Member;
 import peermarket.peershop.repository.ItemRepository;
+import peermarket.peershop.repository.ItemReviewRepository;
 import peermarket.peershop.repository.MemberRepository;
 import peermarket.peershop.service.MemberService;
 
@@ -24,6 +26,7 @@ public class MemberController {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
+    private final ItemReviewRepository itemReviewRepository;
 
     @GetMapping("/member/signup")
     public String signup(Model model) {
@@ -62,6 +65,10 @@ public class MemberController {
             itemRepository.save(new Item(member, "item" + i, "1",
                 "아이템" + i + "입니다", 10, 10000L));
 
+        }
+        for (int i = 0; i < 30; i++) {
+            itemReviewRepository.save(new ItemReview(memberRepository.findById(1L).get(),
+                itemRepository.findById(1L).get(), 3, "test"));
         }
     }
 

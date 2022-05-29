@@ -11,12 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SaveItemReviewDto {
 
-    @NotEmpty
-    private Long id;
-
-    @NotEmpty
-    private Long itemId;
-
     @NotEmpty(message = "댓글을 입력해주세요.")
     private String comment;
 

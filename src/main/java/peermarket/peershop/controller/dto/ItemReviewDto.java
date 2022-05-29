@@ -1,5 +1,6 @@
 package peermarket.peershop.controller.dto;
 
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,10 +19,13 @@ public class ItemReviewDto {
 
     private String comment;
 
+    private LocalDateTime lastModifiedAt;
+
     public ItemReviewDto(ItemReview itemReview) {
         this.id = itemReview.getId();
         this.memberName = itemReview.getMember().getUsername();
         this.rating = itemReview.getRating();
         this.comment = itemReview.getComment();
+        this.lastModifiedAt = itemReview.getLastModifiedAt();
     }
 }

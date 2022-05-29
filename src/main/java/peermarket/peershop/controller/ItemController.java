@@ -44,19 +44,20 @@ public class ItemController {
         ItemOneDto itemDto = new ItemOneDto(item);
         model.addAttribute("item", itemDto);
         model.addAttribute("itemReviews", itemReviews);
-        model.addAttribute("SaveItemReviewDto", new SaveItemReviewDto());
+        model.addAttribute("saveItemReviewDto", new SaveItemReviewDto());
         return "/item/detail";
     }
 
-    @PostMapping("/item/review")
-    public String registerReview(@Valid SaveItemReviewDto saveItemReviewDto, @AuthenticationPrincipal Member member,BindingResult result) {
+    @PostMapping("/item/{id}/review")
+    public String registerReview(@Valid SaveItemReviewDto saveItemReviewDto, @AuthenticationPrincipal Member member, @PathVariable Long id, BindingResult result) {
         if (result.hasErrors()) {
-            return "redirect:/item/" + saveItemReviewDto.getItemId();
+            return "redirect:/item/" + id;
         }
-        Item item = itemService.findOne(saveItemReviewDto.getItemId());
+        Item item = itemService.findOne(id);
         ItemReview itemReview = new ItemReview(member, item, saveItemReviewDto.getRating(),
             saveItemReviewDto.getComment());
         itemService.saveItemReview(itemReview);
-        return "redirect:/item/" + saveItemReviewDto.getItemId();
+        return "redirect:/item/" + id;
     }
+
 }

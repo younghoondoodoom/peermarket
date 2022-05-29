@@ -17,6 +17,8 @@ public class ItemOneDto {
     private Integer stockQuantity;
     private Long price;
     private LocalDateTime lastModifiedAt;
+    private String ratingAverage;
+    private Integer ratingCount;
 
     public ItemOneDto(Item item) {
         this.id = item.getId();
@@ -27,6 +29,8 @@ public class ItemOneDto {
         this.stockQuantity = item.getStockQuantity();
         this.price = item.getPrice();
         this.lastModifiedAt = item.getLastModifiedAt();
+        this.ratingAverage = item.getRatingAverage();
+        this.ratingCount = item.getRatingCount();
     }
 
 }
