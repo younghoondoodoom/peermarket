@@ -1,4 +1,4 @@
-package peermarket.peershop.controller.dto;
+package peermarket.peershop.dto;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;

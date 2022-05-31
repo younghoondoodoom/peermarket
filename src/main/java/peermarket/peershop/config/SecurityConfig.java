@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import peermarket.peershop.security.LoginSuccessHandler;
 
 @Configuration
 @EnableWebSecurity // 스프링 시큐리ㅣ 필터가 스프링 필터체인에 등록됨

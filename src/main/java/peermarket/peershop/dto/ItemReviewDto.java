@@ -1,4 +1,4 @@
-package peermarket.peershop.controller.dto;
+package peermarket.peershop.dto;
 
 import java.time.LocalDateTime;
 import lombok.Getter;

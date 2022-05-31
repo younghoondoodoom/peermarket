@@ -77,38 +77,16 @@
           <input type="hidden"
                  th:name="${_csrf.parameterName}"
                  th:value="${_csrf.token}" />
-          <div class="form-check">
-            <input th:field="*{rating}" class="form-check-input" type="radio" name="star" id="exampleRadios1" value="1" checked>
-            <label class="form-check-label" for="exampleRadios1">
-              ⭐☆☆☆☆
-            </label>
-          </div>
-          <div class="form-check">
-            <input th:field="*{rating}" class="form-check-input" type="radio" name="star" id="exampleRadios1" value="2">
-            <label class="form-check-label" for="exampleRadios1">
-              ⭐⭐☆☆☆
-            </label>
-          </div>
-          <div class="form-check">
-            <input th:field="*{rating}" class="form-check-input" type="radio" name="star" id="exampleRadios1" value="3">
-            <label class="form-check-label" for="exampleRadios1">
-              ⭐⭐⭐☆☆
-            </label>
-          </div>
-          <div class="form-check">
-            <input th:field="*{rating}" class="form-check-input" type="radio" name="star" id="exampleRadios1" value="4">
-            <label class="form-check-label" for="exampleRadios1">
-              ⭐⭐⭐⭐☆
-            </label>
-          </div>
-          <div class="form-check">
-            <input th:field="*{rating}" class="form-check-input" type="radio" name="star" id="exampleRadios1" value="5">
-            <label class="form-check-label" for="exampleRadios1">
-              ⭐⭐⭐⭐⭐
-            </label>
-          </div>
+          <label for="formStarRating">별점</label>
+          <select id="formStarRating" th:field="*{rating}">
+            <option value="1">★</option>
+            <option value="2">★★</option>
+            <option value="3">★★★</option>
+            <option value="4">★★★★</option>
+            <option value="5" selected>★★★★★</option>
+          </select>
           <div class="form-group" style="margin-top: 1rem!important">
-            <textarea th:field="*{comment}" class="form-control" name="review" id="review" placeholder="리뷰를 작성해주세요."></textarea>
+            <textarea th:field="*{comment}" class="form-control" id="review" placeholder="리뷰를 작성해주세요."></textarea>
           </div>
           <input class="btn btn-primary" type="submit" value="리뷰 올리기" style="margin-top: 1rem!important; background-color: #1c1f23; border-color: #1c1f23;">
         </form>

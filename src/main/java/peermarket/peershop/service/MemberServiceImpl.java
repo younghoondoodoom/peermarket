@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import peermarket.peershop.config.auth.PrincipleDetails;
+import peermarket.peershop.security.PrincipalDetails;
 import peermarket.peershop.entity.Member;
 import peermarket.peershop.exception.AlreadyExistException;
 import peermarket.peershop.repository.MemberRepository;
@@ -40,9 +40,10 @@ public class MemberServiceImpl implements MemberService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Member> memberOptional = memberRepository.findByEmail(email);
         if (memberOptional.isPresent()) {
-            return new PrincipleDetails(memberOptional.get());
+            return new PrincipalDetails(memberOptional.get());
+        } else {
+            throw new UsernameNotFoundException(email);
         }
-        return null;
     }
 
 }

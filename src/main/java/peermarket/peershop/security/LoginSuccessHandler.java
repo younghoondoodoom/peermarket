@@ -1,4 +1,4 @@
-package peermarket.peershop.config;
+package peermarket.peershop.security;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

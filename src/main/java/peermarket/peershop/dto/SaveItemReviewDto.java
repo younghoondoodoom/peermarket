@@ -1,6 +1,7 @@
-package peermarket.peershop.controller.dto;
+package peermarket.peershop.dto;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ public class SaveItemReviewDto {
     @NotEmpty(message = "댓글을 입력해주세요.")
     private String comment;
 
-    @NotEmpty(message = "평점을 입력해주세요.")
+    @NotNull(message = "평점을 입력해주세요.")
     private Integer rating;
 
 }
