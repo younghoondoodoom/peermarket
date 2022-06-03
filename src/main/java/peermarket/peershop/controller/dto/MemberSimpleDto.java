@@ -1,4 +1,4 @@
-package peermarket.peershop.dto;
+package peermarket.peershop.controller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

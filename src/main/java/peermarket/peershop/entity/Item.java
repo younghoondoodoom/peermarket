@@ -50,6 +50,13 @@ public class Item extends BaseTimeEntity {
 
     private Integer ratingCount = 0;
 
+    @Enumerated(EnumType.STRING)
+    private ItemStatus status = ItemStatus.ON_SALE;
+
+    @OneToMany
+    @JoinColumn(name = "item_id")
+    private List<CategoryItem> categoryItems = new ArrayList<>();
+
     public Item(Member member, String itemName, String imgUrl, String description, Integer stockQuantity, Long price) {
         this.member = member;
         this.itemName = itemName;
@@ -58,13 +65,6 @@ public class Item extends BaseTimeEntity {
         this.stockQuantity = stockQuantity;
         this.price = price;
     }
-
-    @Enumerated(EnumType.STRING)
-    private ItemStatus status = ItemStatus.ON_SALE;
-
-    @OneToMany
-    @JoinColumn(name = "item_id")
-    private List<CategoryItem> categoryItems = new ArrayList<>();
 
 
     /**

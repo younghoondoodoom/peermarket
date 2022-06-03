@@ -158,4 +158,19 @@ class ItemServiceTest {
 
     }
 
+    @Test
+    public void 아이템_등록() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        memberService.save(member);
+
+        //when
+        Item item = new Item(member, "item", "imgpath", "item1", 100, 10000L);
+        Long itemId = itemService.saveItem(item);
+
+        //then
+        assertThat(itemId).isEqualTo(item.getId());
+
+    }
+
 }

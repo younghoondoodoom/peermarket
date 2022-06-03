@@ -1,4 +1,4 @@
-package peermarket.peershop.dto;
+package peermarket.peershop.controller.dto;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

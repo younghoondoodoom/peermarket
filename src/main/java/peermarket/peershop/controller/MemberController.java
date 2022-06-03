@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import peermarket.peershop.dto.JoinMemberDto;
+import peermarket.peershop.controller.dto.JoinMemberDto;
 import peermarket.peershop.entity.Item;
 import peermarket.peershop.entity.ItemReview;
 import peermarket.peershop.entity.Member;
