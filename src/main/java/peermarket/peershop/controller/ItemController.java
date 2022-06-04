@@ -53,10 +53,9 @@ public class ItemController {
     }
 
     @PostMapping("/item/{id}/review")
-    public String registerReview(@Valid SaveItemReviewDto saveItemReviewDto,
+    public String registerReview(@Valid SaveItemReviewDto saveItemReviewDto, BindingResult result,
         @CurrentMember PrincipalDetails currentMember,
-        @PathVariable Long id,
-        BindingResult result) {
+        @PathVariable Long id) {
         if (result.hasErrors()) {
             return "redirect:/item/" + id;
         }
@@ -91,4 +90,16 @@ public class ItemController {
         Long id = itemService.saveItem(registerItem);
         return "redirect:/item/" + id;
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("item/findItemByMember")
+    public String findItemByMember(@CurrentMember PrincipalDetails currentMember,
+        @PageableDefault(sort = "createdAt", direction = Direction.DESC) Pageable pageable,
+        Model model) {
+        Member member = currentMember.getMember();
+        Page<Item> findItems = itemService.findItemsByMember(member, pageable);
+        model.addAttribute("items", findItems);
+        return "/item/list";
+    }
+
 }
