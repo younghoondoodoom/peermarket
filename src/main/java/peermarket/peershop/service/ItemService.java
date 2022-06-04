@@ -100,6 +100,8 @@ public class ItemService {
     }
 
     public Page<Item> findItemsByMember(Member member, Pageable pageable) {
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        pageable = PageRequest.of(page, pageable.getPageSize(), pageable.getSortOr(Sort.by("createdAt").descending()));
         return itemRepository.findByMember(member, pageable);
     }
 
