@@ -1,7 +1,5 @@
 package peermarket.peershop.service;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peermarket.peershop.entity.Item;
 import peermarket.peershop.entity.ItemReview;
+import peermarket.peershop.entity.Member;
 import peermarket.peershop.exception.NotFoundException;
 import peermarket.peershop.repository.ItemRepository;
 import peermarket.peershop.repository.ItemReviewRepository;
@@ -98,6 +97,10 @@ public class ItemService {
             throw new NotFoundException("해당 아이템이 존재하지 않습니다.");
         }
         return itemReviewRepository.findByItem(findItem.get(), pageable);
+    }
+
+    public Page<Item> findItemsByMember(Member member, Pageable pageable) {
+        return itemRepository.findByMember(member, pageable);
     }
 
 }
