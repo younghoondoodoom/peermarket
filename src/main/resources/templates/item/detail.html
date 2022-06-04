@@ -86,7 +86,11 @@
             <option value="5" selected>★★★★★</option>
           </select>
           <div class="form-group" style="margin-top: 1rem!important">
-            <textarea th:field="*{comment}" class="form-control" id="review" placeholder="리뷰를 작성해주세요."></textarea>
+            <textarea th:field="*{comment}" id="review" placeholder="리뷰를 작성해주세요."
+                      th:class="${#fields.hasErrors('comment')}? 'form-controlFieldError' : 'form-control'">
+            </textarea>
+            <p th:if="${#fields.hasErrors('comment')}"
+               th:errors="*{comment}" />
           </div>
           <input class="btn btn-primary" type="submit" value="리뷰 올리기" style="margin-top: 1rem!important; background-color: #1c1f23; border-color: #1c1f23;">
         </form>
