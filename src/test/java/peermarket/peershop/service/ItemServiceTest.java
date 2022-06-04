@@ -1,21 +1,21 @@
 package peermarket.peershop.service;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import peermarket.peershop.entity.Item;
 import peermarket.peershop.entity.ItemReview;
@@ -23,21 +23,19 @@ import peermarket.peershop.entity.Member;
 import peermarket.peershop.exception.NotFoundException;
 import peermarket.peershop.repository.ItemRepository;
 import peermarket.peershop.repository.ItemReviewRepository;
+import peermarket.peershop.repository.MemberRepository;
 
-@Transactional
 @SpringBootTest
+@Transactional
 class ItemServiceTest {
 
     @Autowired
-    ItemRepository itemRepository;
-    @Autowired
     ItemService itemService;
-    @Autowired
-    MemberService memberService;
     @Autowired
     ItemReviewRepository itemReviewRepository;
     @Autowired
-    EntityManager em;
+    MemberService memberService;
+
 
     @Test
     public void 아이템_리스트() throws Exception {
@@ -170,6 +168,33 @@ class ItemServiceTest {
 
         //then
         assertThat(itemId).isEqualTo(item.getId());
+
+    }
+
+    @Test
+    public void 본인아이템조회() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        memberService.save(member);
+
+        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000L);
+        Item item2 = new Item(member, "item2", "imgpath", "item2", 100, 10000L);
+        Item item3 = new Item(member, "item3", "imgpath", "item3", 100, 10000L);
+        Item item4 = new Item(member, "item4", "imgpath", "item4", 100, 10000L);
+        Item item5 = new Item(member, "item5", "imgpath", "item5", 100, 10000L);
+        Long id1 = itemService.saveItem(item1);
+        Long id2 = itemService.saveItem(item2);
+        Long id3 = itemService.saveItem(item3);
+        Long id4 = itemService.saveItem(item4);
+        Long id5 = itemService.saveItem(item5);
+
+        //when
+        Pageable pageable = PageRequest.of(0, 2, Sort.by("createdAt").descending());
+        Page<Item> findOwnItems = itemService.findItemsByMember(member, pageable);
+
+        //then
+        assertThat(findOwnItems.getContent().get(0).getMember().getId()).isEqualTo(member.getId());
+        assertThat(findOwnItems.getTotalElements()).isEqualTo(5);
 
     }
 
