@@ -198,4 +198,40 @@ class ItemServiceTest {
 
     }
 
+    @Test
+    public void 아이템수정() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        memberService.save(member);
+        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000L);
+        itemService.saveItem(item1);
+
+        //when
+        itemService.updateItem(item1.getId(), "updateItem", "updateImgPath", "updateItem", 10,
+            1000L);
+
+        //then
+        Item findItem = itemService.findOne(item1.getId());
+        assertThat(findItem.getItemName()).isEqualTo("updateItem");
+        assertThat(findItem.getPrice()).isEqualTo(1000L);
+
+    }
+
+    @Test
+    public void 아이템삭제() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        memberService.save(member);
+        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000L);
+        itemService.saveItem(item1);
+
+        //when
+        Long id = item1.getId();
+        itemService.deleteItem(id);
+
+        //then
+        assertThrows(NotFoundException.class, () -> itemService.findOne(id));
+
+    }
+
 }
