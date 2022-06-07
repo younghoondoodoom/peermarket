@@ -1,7 +1,6 @@
 package peermarket.peershop.entity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -65,7 +64,6 @@ public class Item extends BaseTimeEntity {
         this.stockQuantity = stockQuantity;
         this.price = price;
     }
-
 
     /**
      * 재고 증가

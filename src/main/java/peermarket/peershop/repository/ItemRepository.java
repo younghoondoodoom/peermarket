@@ -11,7 +11,6 @@ import peermarket.peershop.entity.Member;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findByItemName(String itemName);
-
     Page<Item> findByMember(Member member, Pageable pageable);
 
 }

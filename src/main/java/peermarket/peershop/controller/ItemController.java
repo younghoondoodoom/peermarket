@@ -7,17 +7,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import peermarket.peershop.controller.dto.ItemListDto;
 import peermarket.peershop.controller.dto.ItemOneDto;
 import peermarket.peershop.controller.dto.ItemReviewDto;
 import peermarket.peershop.controller.dto.SaveItemDto;
 import peermarket.peershop.controller.dto.SaveItemReviewDto;
+import peermarket.peershop.controller.dto.UpdateItemDto;
 import peermarket.peershop.entity.Item;
 import peermarket.peershop.entity.ItemReview;
 import peermarket.peershop.entity.Member;
@@ -41,11 +45,14 @@ public class ItemController {
     @GetMapping("/item/{id}")
     public String findOne(@PathVariable("id") Long id,
         @PageableDefault(size = 10, sort = "createdAt",
-            direction = Direction.DESC) Pageable pageable, Model model) {
+            direction = Direction.DESC) Pageable pageable, @CurrentMember PrincipalDetails currentMember, Model model) {
         Item item = itemService.findOne(id);
         Page<ItemReviewDto> itemReviews = itemService.findReviews(id, pageable).map(
             ItemReviewDto::new);
         ItemOneDto itemDto = new ItemOneDto(item);
+
+        model.addAttribute("isOwner",
+            currentMember != null ? item.getMember().getId() == currentMember.getMember().getId() : false);
         model.addAttribute("item", itemDto);
         model.addAttribute("itemReviews", itemReviews);
         model.addAttribute("saveItemReviewDto", new SaveItemReviewDto());
@@ -100,6 +107,37 @@ public class ItemController {
         Page<Item> findItems = itemService.findItemsByMember(member, pageable);
         model.addAttribute("items", findItems);
         return "/item/list";
+    }
+
+    @PreAuthorize("isAuthenticated() and @itemService.isOwnItem(#id, #currentMember.getMember())")
+    @GetMapping("item/{id}/update")
+    public String getUpdateItemForm(@CurrentMember PrincipalDetails currentMember, Model model,
+        @PathVariable("id") Long id) {
+        Item item = itemService.findOne(id);
+        model.addAttribute("item", item);
+        model.addAttribute("updateItemDto", new UpdateItemDto());
+        return "item/update";
+    }
+
+    @PreAuthorize("isAuthenticated() and @itemService.isOwnItem(#id, #currentMember.getMember())")
+    @PutMapping("item/{id}/update")
+    public String updateItem(@Valid UpdateItemDto updateItemDto,
+        @CurrentMember PrincipalDetails currentMember, @PathVariable("id") Long id,
+        BindingResult result) {
+        if (result.hasErrors()) {
+            return "redirect:/item/" + id + "/update";
+        }
+        itemService.updateItem(id, updateItemDto.getItemName(), updateItemDto.getImgUrl(),
+            updateItemDto.getDescription(),
+            updateItemDto.getStockQuantity(), updateItemDto.getPrice());
+        return "redirect:/item/" + id;
+    }
+
+    @PreAuthorize("isAuthenticated() and @itemService.isOwnItem(#id, #currentMember.getMember())")
+    @DeleteMapping("item/{id}/delete")
+    public String deleteItem(@PathVariable("id") Long id, @CurrentMember PrincipalDetails currentMember) {
+        itemService.deleteItem(id);
+        return "redirect:/";
     }
 
 }
