@@ -10,6 +10,7 @@ package peermarket.peershop.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,14 +18,10 @@ import peermarket.peershop.entity.Member;
 import peermarket.peershop.entity.status.MemberStatus;
 
 @Getter
+@AllArgsConstructor
 public class PrincipalDetails implements UserDetails {
 
-    private Member member;
-
-    public PrincipalDetails(Member member) {
-        this.member = member;
-    }
-
+    private final Member member;
 
     // 해당 유저의 권한을 리턴하는 곳
     @Override

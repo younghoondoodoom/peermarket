@@ -37,15 +37,24 @@ public class ItemService {
      * item 수정
      */
     @Transactional
-    public void updateItem(Long itemId, String name, String imgUrl, String description, Integer price,
-        Long stockQuantity) {
+    public void updateItem(Long itemId, String name, String imgUrl, String description, Integer stockQuantity,
+        Long price) {
         Optional<Item> findItemOptional = itemRepository.findById(itemId);
         if (findItemOptional.isEmpty()) {
             throw new NotFoundException("해당 아이템이 존재하지 않습니다.");
         }
-
         Item item = findItemOptional.get();
-        item.updateItemInfo(name, imgUrl, description, price, stockQuantity);
+        item.updateItemInfo(name, imgUrl, description, stockQuantity, price);
+    }
+
+    /**
+     * item 수정
+     */
+    @Transactional
+    public void deleteItem(Long itemId) {
+        itemRepository.delete(
+            itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("해당 상품을 찾을 수 없습니다."))
+        );
     }
 
     /**
@@ -99,10 +108,25 @@ public class ItemService {
         return itemReviewRepository.findByItem(findItem.get(), pageable);
     }
 
+
     public Page<Item> findItemsByMember(Member member, Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, pageable.getPageSize(), pageable.getSortOr(Sort.by("createdAt").descending()));
         return itemRepository.findByMember(member, pageable);
+    }
+
+    /**
+     * 본인 아이템인지 확인하는 로직
+     */
+    public boolean isOwnItem(Long itemId, Member member) {
+        Optional<Item> item = itemRepository.findById(itemId);
+        if (!item.isPresent()) {
+            throw new NotFoundException("해당 상품이 존재하지 않습니다.");
+        }
+        if (item.get().getMember() != member) {
+            return true;
+        }
+        return false;
     }
 
 }
