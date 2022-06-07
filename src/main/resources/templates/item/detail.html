@@ -43,6 +43,7 @@
       <h4 th:text="${item.getPrice()} + '원'" class="card-text"></h4>
       <p class="card-text"><small th:text="${#temporals.format(item.getLastModifiedAt(), 'yyyy-MM-dd HH:mm')} + '에 수정됨.'" class="text-muted">Last updated 3 mins ago</small></p>
       <a href="#"><button type="button" class="btn btn-outline-success btn-lg">채팅하기</button></a>
+      <a th:if="${isOwner}" th:href="@{item/{id}/update(id=${item.getId()})}"><button type="button" class="btn btn-outline-success btn-lg">수정하기</button></a>
     </div>
   </div>
 

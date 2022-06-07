@@ -1,0 +1,80 @@
+<head th:replace="fragments/header :: header" />
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<style>
+  .form-controlFieldError {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #FF0040;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0.375rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+  p {
+    color: #FF0000;
+  }
+</style>
+
+<body>
+<div class="container">
+
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+  <form th:action="@{/item/{id}/update(id = ${item.getId()})}" th:object="${updateItemDto}" method="put">
+    <input type="hidden"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}" />
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">상품명</label>
+      <input th:field="*{itemName}" class="form-control" id="exampleFormControlInput1" th:placeholder="${item.getItemName()}"
+             th:class="${#fields.hasErrors('itemName')} ? 'form-controlFieldError' : 'form-control'">
+      <p th:if="${#fields.hasErrors('itemName')}"
+         th:errors="*{itemName}"/>
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">이미지 경로</label>
+      <input th:field="*{imgUrl}" class="form-control" id="exampleFormControlInput1" th:placeholder="${item.getImgUrl()}"
+             th:class="${#fields.hasErrors('imgUrl')} ? 'form-controlFieldError' : 'form-control'">
+      <p th:if="${#fields.hasErrors('imgUrl')}"
+         th:errors="*{imgUrl}"/>
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">상품 수량</label>
+      <input th:field="*{stockQuantity}" class="form-control" id="exampleFormControlInput1" th:placeholder="${item.getStockQuantity()}"
+             th:class="${#fields.hasErrors('stockQuantity')} ? 'form-controlFieldError' : 'form-control'">
+      <p th:if="${#fields.hasErrors('stockQuantity')}"
+         th:errors="*{stockQuantity}"/>
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">가격</label>
+      <input th:field="*{price}" id="exampleFormControlInput1" th:placeholder="${item.getPrice()}"
+             th:class="${#fields.hasErrors('price')} ? 'form-controlFieldError' : 'form-control'">
+      <p th:if="${#fields.hasErrors('price')}"
+         th:errors="*{price}"/>
+    </div>
+
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">상품 설명</label>
+      <textarea th:field="*{description}" class="form-control" id="exampleFormControlInput1" th:placeholder="${item.getDescription()}"
+                th:class="${#fields.hasErrors('description')} ? 'form-controlFieldError' : 'form-control'"/>
+      <p th:if="${#fields.hasErrors('description')}"
+         th:errors="*{description}"/>
+    </div>
+    <input class="btn btn-primary" type="submit" value="상품 올리기" style="margin-top: 1rem!important; background-color: #1c1f23; border-color: #1c1f23;">
+  </form>
+  <div/>
+
+  <body/>
+  <html/>
