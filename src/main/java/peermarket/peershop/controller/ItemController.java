@@ -120,12 +120,12 @@ public class ItemController {
     }
 
     @PreAuthorize("isAuthenticated() and @itemService.isOwnItem(#id, #currentMember.getMember())")
-    @PutMapping("item/{id}/update")
-    public String updateItem(@Valid UpdateItemDto updateItemDto,
-        @CurrentMember PrincipalDetails currentMember, @PathVariable("id") Long id,
-        BindingResult result) {
+    @PostMapping("item/{id}/update")
+    public String updateItem(@Valid UpdateItemDto updateItemDto, BindingResult result,
+        @CurrentMember PrincipalDetails currentMember, @PathVariable("id") Long id, Model model) {
         if (result.hasErrors()) {
-            return "redirect:/item/" + id + "/update";
+            model.addAttribute("id", id);
+            return "redirect:/item/{id}/update";
         }
         itemService.updateItem(id, updateItemDto.getItemName(), updateItemDto.getImgUrl(),
             updateItemDto.getDescription(),
@@ -134,7 +134,7 @@ public class ItemController {
     }
 
     @PreAuthorize("isAuthenticated() and @itemService.isOwnItem(#id, #currentMember.getMember())")
-    @DeleteMapping("item/{id}/delete")
+    @PostMapping("item/{id}/delete")
     public String deleteItem(@PathVariable("id") Long id, @CurrentMember PrincipalDetails currentMember) {
         itemService.deleteItem(id);
         return "redirect:/";
