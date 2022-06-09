@@ -78,36 +78,6 @@ public class ItemService {
         return itemRepository.findAll(pageable);
     }
 
-    /**
-     * 댓글 저장
-     */
-    @Transactional
-    public Long saveItemReview(ItemReview itemReview) {
-        ItemReview review = itemReviewRepository.save(itemReview);
-
-        Item item = itemReview.getItem();
-        int count = itemReviewRepository.countReview(item) ;
-        double averageRating = itemReviewRepository.getAverageRating(item);
-        String average = String.format("%.1f", averageRating);
-
-        item.updateRatingCount(count);
-        item.updateRatingAverage(average);
-
-        return review.getId();
-    }
-
-    /**
-     * 댓글 가져오기
-     * pageable
-     */
-    public Page<ItemReview> findReviews(Long itemId, Pageable pageable) {
-        Optional<Item> findItem = itemRepository.findById(itemId);
-        if (findItem.isEmpty()) {
-            throw new NotFoundException("해당 아이템이 존재하지 않습니다.");
-        }
-        return itemReviewRepository.findByItem(findItem.get(), pageable);
-    }
-
 
     public Page<Item> findItemsByMember(Member member, Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);

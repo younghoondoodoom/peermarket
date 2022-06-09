@@ -7,15 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import peermarket.peershop.controller.dto.ItemListDto;
 import peermarket.peershop.controller.dto.ItemOneDto;
 import peermarket.peershop.controller.dto.ItemReviewDto;
@@ -27,6 +24,7 @@ import peermarket.peershop.entity.ItemReview;
 import peermarket.peershop.entity.Member;
 import peermarket.peershop.security.CurrentMember;
 import peermarket.peershop.security.PrincipalDetails;
+import peermarket.peershop.service.ItemReviewService;
 import peermarket.peershop.service.ItemService;
 
 @Controller
@@ -34,6 +32,7 @@ import peermarket.peershop.service.ItemService;
 public class ItemController {
 
     private final ItemService itemService;
+    private final ItemReviewService itemReviewService;
 
     @GetMapping("/")
     public String findItems(@PageableDefault Pageable pageable, Model model) {
@@ -47,7 +46,7 @@ public class ItemController {
         @PageableDefault(size = 10, sort = "createdAt",
             direction = Direction.DESC) Pageable pageable, @CurrentMember PrincipalDetails currentMember, Model model) {
         Item item = itemService.findOne(id);
-        Page<ItemReviewDto> itemReviews = itemService.findReviews(id, pageable).map(
+        Page<ItemReviewDto> itemReviews = itemReviewService.findReviews(id, pageable).map(
             ItemReviewDto::new);
         ItemOneDto itemDto = new ItemOneDto(item);
 
@@ -73,7 +72,7 @@ public class ItemController {
         Member member = currentMember.getMember();
         ItemReview itemReview = new ItemReview(member, item, saveItemReviewDto.getRating(),
             saveItemReviewDto.getComment());
-        itemService.saveItemReview(itemReview);
+        itemReviewService.saveItemReview(itemReview);
         return "redirect:/item/" + id;
     }
 
