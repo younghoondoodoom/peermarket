@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="fragments/header :: header" />
+<style>
+  .form-controlFieldError {
+    border-color: #FF0040;
+    border-style:solid;
+  }
+   label {
+     margin : 3px;
+     text-align: center;
+   }
+  form {
+    width: 500px;
+    margin: auto !important;
+  }
+  input {
+    width: 450px;
+    text-align: center;
+  }
+  p {
+    color: #FF0000;
+  }
+</style>
+<body>
+<div class="container">
+  <form th:action="@{/member/signup}" th:object="${joinMemberDto}" method="post" class="card sign-form p-4 mt-5">
+    <input type="hidden"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}" />
+
+    <h3 style="text-align: center">회원가입</h3>
+
+    <div class="form-group" style="margin:5px 0 5px 0;">
+      <input type="text" th:field="*{email}" class="form-control" placeholder="이메일을 입력해주세요"
+             th:class="${#fields.hasErrors('email')}? 'form-controlFieldError' : 'form-control'">
+      <p th:if="${#fields.hasErrors('email')}"
+         th:errors="*{email}" />
+    </div>
+
+    <div class="form-group" style="margin:5px 0 5px 0;">
+      <input type="text" th:field="*{username}" class="form-control" placeholder="이름 입력해주세요"
+             th:class="${#fields.hasErrors('username')}? 'form-controlFieldError' : 'form-control'">
+      <p th:if="${#fields.hasErrors('username')}"
+         th:errors="*{username}" />
+    </div>
+
+    <div class="form-group" style="margin:5px 0 5px 0;">
+      <input type="password" name="password" placeholder="비밀번호를 입력해주세요" th:field="*{password}" class="form-control"
+        th:class="${#fields.hasErrors('password')} ? 'form-controlFieldError' : 'form-control'">
+      <p th:if="${#fields.hasErrors('password')}"
+         th:errors="*{password}" />
+    </div>
+
+    <div class="form-group" style="margin:5px 0 5px 0;">
+      <input type="password" name="passwordConfirm" placeholder="비밀번호를 확인해주세요" th:field="*{passwordConfirm}" class="form-control"
+             th:class="${#fields.hasErrors('passwordConfirm')} ? 'form-controlFieldError' : 'form-control'">
+      <p th:if="${#fields.hasErrors('passwordConfirm')}"
+         th:errors="*{passwordConfirm}"/>
+    </div>
+
+    <input class="btn btn-primary" type="submit" value="회원가입" style='background-color: #21081a; border-color: #21081a; margin:5px 0 5px 0;'/>
+  </form>
+
+</div>
+<!-- /container -->
+<div th:replace="fragments/footer :: footer" />
+</body>
+</html>

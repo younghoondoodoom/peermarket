@@ -1,0 +1,149 @@
+<head th:replace="fragments/header :: header" />
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<body>
+<style>
+  img {
+    width: 600px;
+    height: 400px;
+    object-fit: contain;
+  }
+
+  .btn-group-lg > .btn, .btn-lg {
+    position: absolute;
+    top: 90%;
+    transform: translate(-50%, -50%)
+  }
+
+  .btn-outline-success {
+    --bs-btn-color: #1c1f23;
+    --bs-btn-border-color: #1c1f23;
+    --bs-btn-hover-bg: #1c1f23;
+    --bs-btn-hover-border-color: #1c1f23;
+    --bs-btn-active-bg: #1c1f23;
+    --bs-btn-active-border-color: #1c1f23;
+    --bs-btn-disabled-color: #1c1f23;
+  }
+
+  .form-check-input:checked {
+    background-color: #1c1f23;
+    border: #1c1f23;
+  }
+
+  .btn-group-lg > .btn, .chat-btn {
+    left: 92% !important;
+    width: 110px !important;
+  }
+
+  .btn-group-lg > .btn, .update-btn {
+    left: 82% !important;
+    width: 110px !important;
+  }
+
+  .btn-group-lg > .btn, .delete-btn {
+    left: 72% !important;
+    width: 110px !important;
+  }
+
+</style>
+
+<div class="container">
+
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+  <div class="card mb-3">
+    <img src="/img/img.png" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h2 th:text="${item.getItemName()}" class="card-title"></h2>
+      <h4 th:text="${item.getPrice()} + '원'" class="card-text"></h4>
+      <p class="card-text"><small
+          th:text="${#temporals.format(item.getLastModifiedAt(), 'yyyy-MM-dd HH:mm')} + '에 수정됨.'"
+          class="text-muted">Last updated 3 mins ago</small></p>
+      <a href="#">
+        <button type="button" class="btn btn-outline-success btn-lg chat-btn">채팅하기</button>
+      </a>
+      <a th:if="${isOwner}" th:href="@{/item/{id}/update(id = ${item.getId()})}">
+        <button type="button" class="btn btn-outline-success btn-lg update-btn">수정하기</button>
+      </a>
+      <form th:if="${isOwner}" th:action="@{/item/{id}/delete(id = ${item.getId()})}" method="post">
+        <input type="hidden"
+               th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}"/>
+        <a>
+          <button type="submit" class="btn btn-outline-success btn-lg delete-btn">삭제하기</button>
+        </a>
+      </form>
+    </div>
+  </div>
+
+  <table class="table">
+    <tbody>
+    <tr>
+      <th scope="row">상품 설명</th>
+      <td th:text="${item.getDescription()}"></td>
+    </tr>
+    <tr>
+      <th scope="row">판매자</th>
+      <td th:text="${item.getMember().getMemberName()}"></td>
+    </tr>
+    <tr>
+      <th scope="row">남은 수량</th>
+      <td th:text="${item.getStockQuantity()}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="card">
+    <div class="card-header">
+      <h3>리뷰</h3>
+      <h4 th:text="${item.getRatingCount()} + '개의 리뷰가 있습니다.'"></h4>
+      <h5 th:text="'★' + ${item.getRatingAverage()}"></h5>
+    </div>
+
+    <div class="card" style="margin-bottom: 1rem!important;">
+      <div sec:authorize="isAuthenticated()" class="card-body"
+           style="margin-bottom: 1rem!important;">
+        <form method="post"
+              th:action="@{/item/{id}/review(id = ${item.getId()})}"
+              th:object="${saveItemReviewDto}">
+          <input type="hidden"
+                 th:name="${_csrf.parameterName}"
+                 th:value="${_csrf.token}"/>
+          <label for="formStarRating">별점</label>
+          <select id="formStarRating" th:field="*{rating}">
+            <option value="1">★</option>
+            <option value="2">★★</option>
+            <option value="3">★★★</option>
+            <option value="4">★★★★</option>
+            <option value="5" selected>★★★★★</option>
+          </select>
+          <div class="form-group" style="margin-top: 1rem!important">
+            <textarea th:field="*{comment}" id="review" placeholder="리뷰를 작성해주세요."
+                      th:class="${#fields.hasErrors('comment')}? 'form-controlFieldError' : 'form-control'">
+            </textarea>
+            <p th:if="${#fields.hasErrors('comment')}"
+               th:errors="*{comment}"/>
+          </div>
+          <input class="btn btn-primary" type="submit" value="리뷰 올리기"
+                 style="margin-top: 1rem!important; background-color: #1c1f23; border-color: #1c1f23;">
+        </form>
+      </div>
+    </div>
+
+
+    <ul th:each="review : ${itemReviews}" class="list-group list-group-flush">
+      <li class="list-group-item">
+        <div th:text="'★' + ${review.getRating()}"></div>
+        <div th:text="${review.getComment()}"></div>
+        <small th:text="${#temporals.format(review.getLastModifiedAt(), 'yyyy-MM-dd HH:mm')}"
+               class="text-muted"></small>
+      </li>
+    </ul>
+
+
+  </div>
+
+</div>
+<!--<div th:replace="fragments/footer :: footer" />-->
+</body>
+</html>
