@@ -99,4 +99,10 @@ public class ItemService {
         return false;
     }
 
+    public Page<Item> searchItem(String searchName, Pageable pageable) {
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        pageable = PageRequest.of(page, pageable.getPageSize(),
+            pageable.getSortOr(Sort.by("createdAt").descending()));
+        return itemRepository.findByItemNameContaining(searchName, pageable);
+    }
 }
