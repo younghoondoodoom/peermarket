@@ -21,7 +21,6 @@ import peermarket.peershop.repository.ItemReviewRepository;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private final ItemReviewRepository itemReviewRepository;
 
 
     /**

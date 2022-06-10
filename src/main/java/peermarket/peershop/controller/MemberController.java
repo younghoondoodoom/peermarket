@@ -52,24 +52,4 @@ public class MemberController {
         return "/user/login";
     }
 
-    @PostConstruct
-    public void init() {
-        for (int i = 0; i < 5; i++) {
-            String encodePassword = bCryptPasswordEncoder.encode("test123");
-            Member member = new Member("member" + i + "@test.com", encodePassword, "member" + i);
-            member.setRole("ROLE_USER");
-            memberRepository.save(member);
-        }
-        for (long i = 0; i < 10; i++) {
-            Member member = memberRepository.getById(1L);
-            itemRepository.save(new Item(member, "item" + i, "1",
-                "아이템" + i + "입니다", 10, 10000L));
-
-        }
-        for (int i = 0; i < 30; i++) {
-            itemReviewRepository.save(new ItemReview(memberRepository.findById(1L).get(),
-                itemRepository.findById(1L).get(), 3, "test"));
-        }
-    }
-
 }
