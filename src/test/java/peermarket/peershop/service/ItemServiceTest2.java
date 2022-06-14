@@ -32,62 +32,6 @@ public class ItemServiceTest2 {
     @InjectMocks
     ItemService itemService;
 
-
-
-    @Test
-    public void 아이템_리스트() throws Exception {
-        //given
-        Member member = new Member("test@test.com", "test123!", "test");
-        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000L);
-        Item item2 = new Item(member, "item2", "imgpath", "item2", 100, 10000L);
-        Item item3 = new Item(member, "item3", "imgpath", "item3", 100, 10000L);
-        Item item4 = new Item(member, "item4", "imgpath", "item4", 100, 10000L);
-        Item item5 = new Item(member, "item5", "imgpath", "item5", 100, 10000L);
-
-        ArrayList<Item> items = new ArrayList<>();
-        items.add(item1);
-        items.add(item2);
-        items.add(item3);
-        items.add(item4);
-        items.add(item5);
-
-        Page<Item> pageItem = new PageImpl<>(items);
-        Pageable pageable = PageRequest.of(0, 5, Sort.by("createdAt").descending());
-
-        given(itemRepository.findAll(pageable)).willReturn(pageItem);
-
-        //when
-        Page<Item> result = itemService.findItems(pageable);
-
-        //then
-        assertThat(result.getTotalElements()).isEqualTo(5);
-        assertThat(result.getContent()).contains(item1, item2, item3, item4, item5);
-        assertThat(result.getSize()).isEqualTo(5);
-
-    }
-
-    @Test
-    public void 아이템_디테일() throws Exception {
-        //given
-        Member member = new Member("test@test.com", "test123!", "test");
-        Item item = new Item(member, "item", "imgpath", "item", 100, 10000L);
-
-        Optional<Item> findItem = Optional.ofNullable(item);
-        given(itemRepository.findById(item.getId())).willReturn(findItem);
-
-        //when
-        Item result = itemService.findOne(item.getId());
-
-        //then
-        assertThat(result.getItemName()).isEqualTo("item");
-        assertThat(result.getMember().getEmail()).isEqualTo("test@test.com");
-        assertThat(result.getPrice()).isEqualTo(10000L);
-
-        assertThrows(NotFoundException.class, () -> {
-            itemService.findOne(100000L);
-        });
-    }
-
     @Test
     public void 아이템저장() throws Exception {
         //given
@@ -144,4 +88,100 @@ public class ItemServiceTest2 {
         itemService.deleteItem(1L);
         verify(itemRepository, times(1)).delete(item);
     }
+
+    @Test
+    public void 아이템_디테일() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        Item item = new Item(member, "item", "imgpath", "item", 100, 10000L);
+
+        Optional<Item> findItem = Optional.ofNullable(item);
+        given(itemRepository.findById(item.getId())).willReturn(findItem);
+
+        //when
+        Item result = itemService.findOne(item.getId());
+
+        //then
+        assertThat(result.getItemName()).isEqualTo("item");
+        assertThat(result.getMember().getEmail()).isEqualTo("test@test.com");
+        assertThat(result.getPrice()).isEqualTo(10000L);
+
+        assertThrows(NotFoundException.class, () -> {
+            itemService.findOne(100000L);
+        });
+    }
+
+    @Test
+    public void 아이템_리스트() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000L);
+        Item item2 = new Item(member, "item2", "imgpath", "item2", 100, 10000L);
+        Item item3 = new Item(member, "item3", "imgpath", "item3", 100, 10000L);
+        Item item4 = new Item(member, "item4", "imgpath", "item4", 100, 10000L);
+        Item item5 = new Item(member, "item5", "imgpath", "item5", 100, 10000L);
+
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(item1);
+        items.add(item2);
+        items.add(item3);
+        items.add(item4);
+        items.add(item5);
+
+        Page<Item> pageItem = new PageImpl<>(items);
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("createdAt").descending());
+
+        given(itemRepository.findAll(pageable)).willReturn(pageItem);
+
+        //when
+        Page<Item> result = itemService.findItems(pageable);
+
+        //then
+        assertThat(result.getTotalElements()).isEqualTo(5);
+        assertThat(result.getContent()).contains(item1, item2, item3, item4, item5);
+        assertThat(result.getSize()).isEqualTo(5);
+    }
+
+    @Test
+    public void 회원_아이템찾기() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000L);
+        Item item2 = new Item(member, "item2", "imgpath", "item2", 100, 10000L);
+        Item item3 = new Item(member, "item3", "imgpath", "item3", 100, 10000L);
+        Item item4 = new Item(member, "item4", "imgpath", "item4", 100, 10000L);
+        Item item5 = new Item(member, "item5", "imgpath", "item5", 100, 10000L);
+
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(item1);
+        items.add(item2);
+        items.add(item3);
+        items.add(item4);
+        items.add(item5);
+
+        Page<Item> pageItem = new PageImpl<>(items);
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("createdAt").descending());
+
+        given(itemRepository.findByMember(member, pageable)).willReturn(pageItem);
+
+        //when
+        Page<Item> result = itemService.findItemsByMember(member, pageable);
+
+        //then
+        assertThat(result.getTotalElements()).isEqualTo(5);
+        assertThat(result.getContent()).contains(item1, item2, item3, item4, item5);
+        assertThat(result.getSize()).isEqualTo(5);
+
+    }
+    
+    @Test
+    public void Test () throws Exception {
+        //given
+        
+        //when
+      
+        //then
+        
+    }
+
 }
