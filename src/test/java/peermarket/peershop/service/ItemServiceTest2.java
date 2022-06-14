@@ -3,10 +3,11 @@ package peermarket.peershop.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -130,5 +131,17 @@ public class ItemServiceTest2 {
                 1000L);
         });
 
+    }
+
+    @Test
+    public void 아이템삭제() throws Exception {
+        Member member = new Member("test@test.com", "test123!", "test");
+        Item item = new Item(member, "item", "imgpath", "item", 100, 10000L);
+
+        Optional<Item> findItem = Optional.ofNullable(item);
+        given(itemRepository.findById(1L)).willReturn(findItem);
+
+        itemService.deleteItem(1L);
+        verify(itemRepository, times(1)).delete(item);
     }
 }

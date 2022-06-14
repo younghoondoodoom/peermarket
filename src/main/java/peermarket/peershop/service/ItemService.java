@@ -47,7 +47,7 @@ public class ItemService {
     }
 
     /**
-     * item 수정
+     * item 삭제
      */
     @Transactional
     public void deleteItem(Long itemId) {
