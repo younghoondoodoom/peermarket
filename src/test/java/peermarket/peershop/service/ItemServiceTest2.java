@@ -1,6 +1,7 @@
 package peermarket.peershop.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
@@ -70,8 +71,7 @@ public class ItemServiceTest2 {
         Member member = new Member("test@test.com", "test123!", "test");
         Item item = new Item(member, "item", "imgpath", "item", 100, 10000L);
 
-        Optional<Item> findItem = Optional.of(item);
-
+        Optional<Item> findItem = Optional.ofNullable(item);
         given(itemRepository.findById(item.getId())).willReturn(findItem);
 
         //when
@@ -82,7 +82,7 @@ public class ItemServiceTest2 {
         assertThat(result.getMember().getEmail()).isEqualTo("test@test.com");
         assertThat(result.getPrice()).isEqualTo(10000L);
 
-        Assertions.assertThrows(NotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             itemService.findOne(100000L);
         });
     }
@@ -100,6 +100,35 @@ public class ItemServiceTest2 {
 
         //then
         assertThat(item.getId()).isEqualTo(savedItemId);
+
+    }
+
+    @Test
+    public void 아이템수정() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        Item item = new Item(member, "item", "imgpath", "item", 100, 10000L);
+
+        Optional<Item> findItem = Optional.ofNullable(item);
+        given(itemRepository.findById(item.getId())).willReturn(findItem);
+
+        //when
+        itemService.updateItem(item.getId(), "updateItem", "updateImgpath", "updateItem", 1000,
+            1000L);
+
+        //then
+        Item retrieveItem = itemService.findOne(item.getId());
+
+        assertThat(retrieveItem.getItemName()).isEqualTo("updateItem");
+        assertThat(retrieveItem.getImgUrl()).isEqualTo("updateImgpath");
+        assertThat(retrieveItem.getDescription()).isEqualTo("updateItem");
+        assertThat(retrieveItem.getStockQuantity()).isEqualTo(1000);
+        assertThat(retrieveItem.getPrice()).isEqualTo(1000L);
+
+        assertThrows(NotFoundException.class, () -> {
+            itemService.updateItem(1000000L, "updateItem", "updateImgpath", "updateItem", 1000,
+                1000L);
+        });
 
     }
 }
