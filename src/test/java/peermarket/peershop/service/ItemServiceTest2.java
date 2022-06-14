@@ -1,10 +1,12 @@
 package peermarket.peershop.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
-import org.assertj.core.api.Assertions;
+import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,8 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import peermarket.peershop.entity.Item;
 import peermarket.peershop.entity.Member;
+import peermarket.peershop.exception.NotFoundException;
 import peermarket.peershop.repository.ItemRepository;
-import peermarket.peershop.repository.ItemReviewRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class ItemServiceTest2 {
@@ -50,6 +52,7 @@ public class ItemServiceTest2 {
         Pageable pageable = PageRequest.of(0, 5, Sort.by("createdAt").descending());
 
         given(itemRepository.findAll(pageable)).willReturn(pageItem);
+
         //when
         Page<Item> result = itemService.findItems(pageable);
 
@@ -58,5 +61,28 @@ public class ItemServiceTest2 {
         assertThat(result.getContent()).contains(item1, item2, item3, item4, item5);
         assertThat(result.getSize()).isEqualTo(5);
 
+    }
+
+    @Test
+    public void 아이템_디테일() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        Item item = new Item(member, "item", "imgpath", "item", 100, 10000L);
+
+        Optional<Item> findItem = Optional.of(item);
+
+        given(itemRepository.findById(item.getId())).willReturn(findItem);
+
+        //when
+        Item result = itemService.findOne(item.getId());
+
+        //then
+        assertThat(result.getItemName()).isEqualTo("item");
+        assertThat(result.getMember().getEmail()).isEqualTo("test@test.com");
+        assertThat(result.getPrice()).isEqualTo(10000L);
+
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            itemService.findOne(100000L);
+        });
     }
 }
