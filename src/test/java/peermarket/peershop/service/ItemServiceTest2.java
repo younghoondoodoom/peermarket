@@ -1,7 +1,6 @@
 package peermarket.peershop.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 import java.util.ArrayList;
@@ -30,6 +29,8 @@ public class ItemServiceTest2 {
 
     @InjectMocks
     ItemService itemService;
+
+
 
     @Test
     public void 아이템_리스트() throws Exception {
@@ -84,5 +85,21 @@ public class ItemServiceTest2 {
         Assertions.assertThrows(NotFoundException.class, () -> {
             itemService.findOne(100000L);
         });
+    }
+
+    @Test
+    public void 아이템저장() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        Item item = new Item(member, "item", "imgpath", "item", 100, 10000L);
+
+        given(itemRepository.save(item)).willReturn(item);
+
+        //when
+        Long savedItemId = itemService.saveItem(item);
+
+        //then
+        assertThat(item.getId()).isEqualTo(savedItemId);
+
     }
 }
