@@ -24,9 +24,6 @@ public class MemberController {
 
     private final MemberService memberService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final MemberRepository memberRepository;
-    private final ItemRepository itemRepository;
-    private final ItemReviewRepository itemReviewRepository;
 
     @GetMapping("/member/signup")
     public String signup(Model model) {
