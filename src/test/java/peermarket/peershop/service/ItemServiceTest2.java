@@ -175,13 +175,36 @@ public class ItemServiceTest2 {
     }
     
     @Test
-    public void Test () throws Exception {
+    public void 아이템검색() throws Exception {
         //given
-        
+        Member member = new Member("test@test.com", "test123!", "test");
+        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000L);
+        Item item2 = new Item(member, "item2", "imgpath", "item2", 100, 10000L);
+        Item item3 = new Item(member, "item3", "imgpath", "item3", 100, 10000L);
+        Item item4 = new Item(member, "item4", "imgpath", "item4", 100, 10000L);
+        Item item5 = new Item(member, "item5", "imgpath", "item5", 100, 10000L);
+
+        ArrayList<Item> items = new ArrayList<>();
+        items.add(item1);
+        items.add(item2);
+        items.add(item3);
+        items.add(item4);
+        items.add(item5);
+
+        Page<Item> pageItem = new PageImpl<>(items);
+        Pageable pageable = PageRequest.of(0, 5, Sort.by("createdAt").descending());
+
+        String searchName = "item";
+
+        given(itemRepository.findByItemNameContaining(searchName, pageable)).willReturn(pageItem);
+
         //when
-      
+        Page<Item> result = itemService.searchItem(searchName, pageable);
+
         //then
-        
+        assertThat(result.getTotalElements()).isEqualTo(5);
+        assertThat(result.getContent()).contains(item1, item2, item3, item4, item5);
+        assertThat(result.getSize()).isEqualTo(5);
     }
 
 }

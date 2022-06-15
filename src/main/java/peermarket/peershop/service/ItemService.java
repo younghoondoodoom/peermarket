@@ -9,11 +9,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peermarket.peershop.entity.Item;
-import peermarket.peershop.entity.ItemReview;
 import peermarket.peershop.entity.Member;
 import peermarket.peershop.exception.NotFoundException;
 import peermarket.peershop.repository.ItemRepository;
-import peermarket.peershop.repository.ItemReviewRepository;
 
 @Service
 @Transactional(readOnly = true)
@@ -84,6 +82,13 @@ public class ItemService {
         return itemRepository.findByMember(member, pageable);
     }
 
+    public Page<Item> searchItem(String itemName, Pageable pageable) {
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        pageable = PageRequest.of(page, pageable.getPageSize(),
+            pageable.getSortOr(Sort.by("createdAt").descending()));
+        return itemRepository.findByItemNameContaining(itemName, pageable);
+    }
+
     /**
      * 본인 아이템인지 확인하는 로직
      */
@@ -98,10 +103,4 @@ public class ItemService {
         return false;
     }
 
-    public Page<Item> searchItem(String searchName, Pageable pageable) {
-        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, pageable.getPageSize(),
-            pageable.getSortOr(Sort.by("createdAt").descending()));
-        return itemRepository.findByItemNameContaining(searchName, pageable);
-    }
 }
