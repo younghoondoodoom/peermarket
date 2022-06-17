@@ -64,7 +64,7 @@ public class ItemServiceTest2 {
         //then
         Item retrieveItem = itemService.findOne(item.getId());
 
-        assertThat(retrieveItem.getItemName()).isEqualTo("updateItem");
+        assertThat(retrieveItem.getName()).isEqualTo("updateItem");
         assertThat(retrieveItem.getImgUrl()).isEqualTo("updateImgpath");
         assertThat(retrieveItem.getDescription()).isEqualTo("updateItem");
         assertThat(retrieveItem.getStockQuantity()).isEqualTo(1000);
@@ -102,7 +102,7 @@ public class ItemServiceTest2 {
         Item result = itemService.findOne(item.getId());
 
         //then
-        assertThat(result.getItemName()).isEqualTo("item");
+        assertThat(result.getName()).isEqualTo("item");
         assertThat(result.getMember().getEmail()).isEqualTo("test@test.com");
         assertThat(result.getPrice()).isEqualTo(10000L);
 
@@ -196,7 +196,7 @@ public class ItemServiceTest2 {
 
         String searchName = "item";
 
-        given(itemRepository.findByItemNameContaining(searchName, pageable)).willReturn(pageItem);
+        given(itemRepository.findByNameContaining(searchName, pageable)).willReturn(pageItem);
 
         //when
         Page<Item> result = itemService.searchItem(searchName, pageable);

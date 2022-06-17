@@ -71,8 +71,8 @@ class ItemRepositoryTest {
 
         //when
         Pageable pageable = PageRequest.of(0, 2, Sort.by("createdAt").descending());
-        Page<Item> findItems = itemRepository.findByItemNameContaining("item", pageable);
-        Page<Item> findNoThing = itemRepository.findByItemNameContaining("noThing", pageable);
+        Page<Item> findItems = itemRepository.findByNameContaining("item", pageable);
+        Page<Item> findNoThing = itemRepository.findByNameContaining("noThing", pageable);
 
         //then
         assertThat(findItems.getTotalElements()).isEqualTo(5);

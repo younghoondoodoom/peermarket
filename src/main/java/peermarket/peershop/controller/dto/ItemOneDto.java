@@ -23,7 +23,7 @@ public class ItemOneDto {
     public ItemOneDto(Item item) {
         this.id = item.getId();
         this.member = new MemberSimpleDto(item.getMember().getId(), item.getMember().getUsername());
-        this.itemName = item.getItemName();
+        this.itemName = item.getName();
         this.imgUrl = item.getImgUrl();
         this.description = item.getDescription();
         this.stockQuantity = item.getStockQuantity();

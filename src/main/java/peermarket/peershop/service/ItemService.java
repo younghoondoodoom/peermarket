@@ -82,11 +82,11 @@ public class ItemService {
         return itemRepository.findByMember(member, pageable);
     }
 
-    public Page<Item> searchItem(String itemName, Pageable pageable) {
+    public Page<Item> searchItem(String name, Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, pageable.getPageSize(),
             pageable.getSortOr(Sort.by("createdAt").descending()));
-        return itemRepository.findByItemNameContaining(itemName, pageable);
+        return itemRepository.findByNameContaining(name, pageable);
     }
 
     /**

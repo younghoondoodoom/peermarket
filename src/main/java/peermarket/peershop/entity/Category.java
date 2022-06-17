@@ -22,7 +22,7 @@ public class Category {
     @Column(name = "category_id")
     private Long id;
 
-    private String categoryName;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -33,7 +33,7 @@ public class Category {
 
     @OneToMany
     @JoinColumn(name = "author_id")
-    private List<CategoryItem> categoryItems = new ArrayList<>();
+    private List<CategoryItem> items = new ArrayList<>();
 
     /**
      * 연관 관계 메서드

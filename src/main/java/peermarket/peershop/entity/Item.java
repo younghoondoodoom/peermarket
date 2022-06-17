@@ -34,7 +34,7 @@ public class Item extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private String itemName;
+    private String name;
 
     @Column(length = 2000)
     private String imgUrl;
@@ -56,9 +56,9 @@ public class Item extends BaseTimeEntity {
     @JoinColumn(name = "item_id")
     private List<CategoryItem> categoryItems = new ArrayList<>();
 
-    public Item(Member member, String itemName, String imgUrl, String description, Integer stockQuantity, Long price) {
+    public Item(Member member, String name, String imgUrl, String description, Integer stockQuantity, Long price) {
         this.member = member;
-        this.itemName = itemName;
+        this.name = name;
         this.imgUrl = imgUrl;
         this.description = description;
         this.stockQuantity = stockQuantity;
@@ -96,7 +96,7 @@ public class Item extends BaseTimeEntity {
 
     public void updateItemInfo(String itemName, String imgUrl, String description,
         Integer stockQuantity, Long price) {
-        this.itemName = itemName;
+        this.name = itemName;
         this.imgUrl = imgUrl;
         this.description = description;
         this.stockQuantity = stockQuantity;

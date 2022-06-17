@@ -1,0 +1,34 @@
+<head th:replace="fragments/header :: header" />
+<body>
+<style>
+
+  .card-group>.card {
+    min-width: 20%;
+    max-width: 20%;
+  }
+  .active>.page-link, .page-link.active {
+    background-color: #1c1f23;
+    border-color: #1c1f23;
+  }
+
+  a {
+    color: #1c1f23;
+    text-decoration: auto;
+  }
+
+  a:hover {
+    color: #1c1f23;
+  }
+
+
+
+
+</style>
+
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+
+
+</body>
+<div th:replace="fragments/footer :: footer" />
+</html>
