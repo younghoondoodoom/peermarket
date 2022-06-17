@@ -6,6 +6,6 @@ import peermarket.peershop.entity.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    Optional<Category> findByCategoryName(String categoryName);
+    Optional<Category> findByName(String categoryName);
 
 }

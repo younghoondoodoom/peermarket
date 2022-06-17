@@ -9,11 +9,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import peermarket.peershop.entity.Item;
-import peermarket.peershop.entity.ItemReview;
 import peermarket.peershop.entity.Member;
 import peermarket.peershop.exception.NotFoundException;
 import peermarket.peershop.repository.ItemRepository;
-import peermarket.peershop.repository.ItemReviewRepository;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,7 +19,6 @@ import peermarket.peershop.repository.ItemReviewRepository;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private final ItemReviewRepository itemReviewRepository;
 
 
     /**
@@ -48,7 +45,7 @@ public class ItemService {
     }
 
     /**
-     * item 수정
+     * item 삭제
      */
     @Transactional
     public void deleteItem(Long itemId) {
@@ -83,6 +80,13 @@ public class ItemService {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, pageable.getPageSize(), pageable.getSortOr(Sort.by("createdAt").descending()));
         return itemRepository.findByMember(member, pageable);
+    }
+
+    public Page<Item> searchItem(String name, Pageable pageable) {
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        pageable = PageRequest.of(page, pageable.getPageSize(),
+            pageable.getSortOr(Sort.by("createdAt").descending()));
+        return itemRepository.findByNameContaining(name, pageable);
     }
 
     /**

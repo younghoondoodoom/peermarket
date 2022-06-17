@@ -23,7 +23,7 @@ public class ItemListDto {
 
     public ItemListDto(Item item) {
         this.id = item.getId();
-        this.itemName = item.getItemName();
+        this.itemName = item.getName();
         this.imgUrl = item.getImgUrl();
         this.price = item.getPrice();
         this.stockQuantity = item.getStockQuantity();

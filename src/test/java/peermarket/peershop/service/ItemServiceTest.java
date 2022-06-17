@@ -170,4 +170,33 @@ class ItemServiceTest {
 
     }
 
+    @Test
+    public void 아이템검색() throws Exception {
+        //given
+        Member member = new Member("test@test.com", "test123!", "test");
+        memberService.save(member);
+        Item item1 = new Item(member, "item1", "imgpath", "item1", 100, 10000L);
+        Item item2 = new Item(member, "item2", "imgpath", "item2", 100, 10000L);
+        Item item3 = new Item(member, "item3", "imgpath", "item3", 100, 10000L);
+        Item item4 = new Item(member, "item4", "imgpath", "item4", 100, 10000L);
+        Item item5 = new Item(member, "item5", "imgpath", "item5", 100, 10000L);
+        itemService.saveItem(item1);
+        itemService.saveItem(item2);
+        itemService.saveItem(item3);
+        itemService.saveItem(item4);
+        itemService.saveItem(item5);
+
+        //when
+        String searchName = "item";
+        Pageable pageable = PageRequest.of(0, 2, Sort.by("createdAt").descending());
+        Page<Item> searchItems = itemService.searchItem(searchName, pageable);
+
+        //then
+        assertThat(searchItems.getTotalElements()).isEqualTo(5);
+        assertThat(searchItems.getSize()).isEqualTo(2);
+        assertThat(searchItems.getContent()).contains(item4, item5);
+        assertThat(searchItems.getTotalPages()).isEqualTo(3);
+
+    }
+
 }

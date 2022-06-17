@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import peermarket.peershop.controller.dto.ItemListDto;
 import peermarket.peershop.controller.dto.ItemOneDto;
 import peermarket.peershop.controller.dto.ItemReviewDto;
@@ -44,14 +45,16 @@ public class ItemController {
     @GetMapping("/item/{id}")
     public String findOne(@PathVariable("id") Long id,
         @PageableDefault(size = 10, sort = "createdAt",
-            direction = Direction.DESC) Pageable pageable, @CurrentMember PrincipalDetails currentMember, Model model) {
+            direction = Direction.DESC) Pageable pageable,
+        @CurrentMember PrincipalDetails currentMember, Model model) {
         Item item = itemService.findOne(id);
         Page<ItemReviewDto> itemReviews = itemReviewService.findReviews(id, pageable).map(
             ItemReviewDto::new);
         ItemOneDto itemDto = new ItemOneDto(item);
 
         model.addAttribute("isOwner",
-            currentMember != null ? item.getMember().getId() == currentMember.getMember().getId() : false);
+            currentMember != null ? item.getMember().getId() == currentMember.getMember().getId()
+                : false);
         model.addAttribute("item", itemDto);
         model.addAttribute("itemReviews", itemReviews);
         model.addAttribute("saveItemReviewDto", new SaveItemReviewDto());
@@ -134,9 +137,18 @@ public class ItemController {
 
     @PreAuthorize("isAuthenticated() and @itemService.isOwnItem(#id, #currentMember.getMember())")
     @PostMapping("item/{id}/delete")
-    public String deleteItem(@PathVariable("id") Long id, @CurrentMember PrincipalDetails currentMember) {
+    public String deleteItem(@PathVariable("id") Long id,
+        @CurrentMember PrincipalDetails currentMember) {
         itemService.deleteItem(id);
         return "redirect:/";
+    }
+
+    @GetMapping("item/search")
+    public String searchItem(@RequestParam(value = "itemName") String itemName, Model model,
+        @PageableDefault(sort = "createdAt", direction = Direction.DESC) Pageable pageable) {
+        Page<Item> findItems = itemService.searchItem(itemName, pageable);
+        model.addAttribute("items", findItems);
+        return "/item/list";
     }
 
 }
