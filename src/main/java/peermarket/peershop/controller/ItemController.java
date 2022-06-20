@@ -35,12 +35,12 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemReviewService itemReviewService;
 
-    @GetMapping("/")
-    public String findItems(@PageableDefault Pageable pageable, Model model) {
-        Page<ItemListDto> items = itemService.findItems(pageable).map(ItemListDto::new);
-        model.addAttribute("items", items);
-        return "/home";
-    }
+//    @GetMapping("/")
+//    public String findItems(@PageableDefault Pageable pageable, Model model) {
+//        Page<ItemListDto> items = itemService.findItems(pageable).map(ItemListDto::new);
+//        model.addAttribute("items", items);
+//        return "/home";
+//    }
 
     @GetMapping("/item/{id}")
     public String findOne(@PathVariable("id") Long id,
