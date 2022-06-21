@@ -80,7 +80,7 @@ class ItemServiceTest {
         Item findItem5 = itemService.findOne(id5);
 
         //then
-        assertThat(findItem1.getItemName()).isEqualTo("item1");
+        assertThat(findItem1.getName()).isEqualTo("item1");
         assertThat(findItem2.getImgUrl()).isEqualTo("imgpath");
         assertThat(findItem3.getDescription()).isEqualTo("item3");
         assertThat(findItem4.getPrice()).isEqualTo(10000L);
@@ -148,7 +148,7 @@ class ItemServiceTest {
 
         //then
         Item findItem = itemService.findOne(item1.getId());
-        assertThat(findItem.getItemName()).isEqualTo("updateItem");
+        assertThat(findItem.getName()).isEqualTo("updateItem");
         assertThat(findItem.getPrice()).isEqualTo(1000L);
 
     }

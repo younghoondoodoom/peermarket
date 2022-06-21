@@ -41,7 +41,7 @@ public class ItemReviewRepositoryTest {
         //then
         assertThat(itemReview).isNotNull();
         assertThat(itemReview.getMember().getEmail()).isEqualTo("test@test.com");
-        assertThat(itemReview.getItem().getItemName()).isEqualTo("item");
+        assertThat(itemReview.getItem().getName()).isEqualTo("item");
         assertThat(itemReview.getRating()).isEqualTo(5);
         assertThat(itemReview.getCreatedAt()).isNotNull();
         assertThat(itemReview.getLastModifiedAt()).isNotNull();
