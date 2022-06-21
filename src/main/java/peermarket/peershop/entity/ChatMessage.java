@@ -41,6 +41,16 @@ public class ChatMessage extends BaseTimeEntity {
     @JoinColumn(name = "chatRoom_id")
     private ChatRoom chatRoom;
 
+    public ChatMessage(Long id, String name, Member member, MessageType messageType, String content,
+        ChatRoom chatRoom) {
+        this.id = id;
+        this.name = name;
+        this.member = member;
+        this.messageType = messageType;
+        this.content = content;
+        this.chatRoom = chatRoom;
+    }
+
     @Override
     public String toString() {
         return "ChatMessage{" +
