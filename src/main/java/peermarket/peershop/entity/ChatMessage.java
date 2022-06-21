@@ -51,11 +51,10 @@ public class ChatMessage extends BaseTimeEntity {
         this.chatRoom = chatRoom;
     }
 
-    @Override
-    public String toString() {
-        return "ChatMessage{" +
-            "id=" + id +
-            ", content='" + content + '\'' +
-            "} " + super.toString();
+    /**
+     * 입장 메세지
+     */
+    public void entryMessage() {
+        this.content = this.member.getUsername() + "님이 입장하셨습니다.";
     }
 }

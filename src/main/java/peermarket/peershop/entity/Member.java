@@ -1,6 +1,8 @@
 package peermarket.peershop.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +29,9 @@ public class Member extends BaseTimeEntity {
     private String password;
     private String username;
     private String role;
+
+    @OneToMany(mappedBy = "member")
+    private List<RoomMember> rooms = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private MemberStatus status = MemberStatus.ACTIVE;

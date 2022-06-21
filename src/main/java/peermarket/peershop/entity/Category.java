@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.Getter;
+import org.hibernate.mapping.Join;
 
 @Getter
 @Entity
@@ -31,8 +32,7 @@ public class Category {
     @OneToMany(mappedBy = "parent")
     private List<Category> children = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "author_id")
+    @OneToMany(mappedBy = "category")
     private List<CategoryItem> items = new ArrayList<>();
 
     /**
