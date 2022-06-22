@@ -26,8 +26,6 @@ public class ChatMessage extends BaseTimeEntity {
     @Column(name = "chatMessage_id")
     private Long id;
 
-    private String name;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -41,20 +39,12 @@ public class ChatMessage extends BaseTimeEntity {
     @JoinColumn(name = "chatRoom_id")
     private ChatRoom chatRoom;
 
-    public ChatMessage(Long id, String name, Member member, MessageType messageType, String content,
+    public ChatMessage(Member member, MessageType messageType, String content,
         ChatRoom chatRoom) {
-        this.id = id;
-        this.name = name;
         this.member = member;
         this.messageType = messageType;
         this.content = content;
         this.chatRoom = chatRoom;
     }
 
-    /**
-     * 입장 메세지
-     */
-    public void entryMessage() {
-        this.content = this.member.getUsername() + "님이 입장하셨습니다.";
-    }
 }

@@ -1,7 +1,9 @@
 package peermarket.peershop.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.socket.WebSocketSession;
 import peermarket.peershop.entity.base.BaseTimeEntity;
 
 @Getter
@@ -27,4 +30,10 @@ public class ChatRoom extends BaseTimeEntity {
     @OneToMany(mappedBy = "chatRoom")
     private List<RoomMember> members = new ArrayList<>();
 
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatMessage> chatMessages = new ArrayList<>();
+
+    public ChatRoom(String name) {
+        this.name = name;
+    }
 }
